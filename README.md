@@ -1,54 +1,68 @@
-Rule-Based Checker (v0.1)
+# 🧱 **Rule-Based Checker (v0.1)**
 
-This program checks a structured request and decides if it is ALLOWED or BLOCKED based on clear rules.
+This program checks a **structured request** and decides whether it is **ALLOWED** or **BLOCKED** using clear, deterministic rules.
 
-What it does
+---
 
-Normalizes input (lowercases user and role)
+## ✅ **What It Does**
 
-Checks required fields (user, role, actions)
+* **Normalizes input**
 
-Blocks empty or invalid values
+  * Lowercases `user` and `role`
+* **Checks required fields**
 
-Enforces role-based permissions
+  * Ensures `user`, `role`, and `actions` exist
+* **Blocks invalid values**
 
-Blocks banned users immediately
+  * Empty fields
+  * Invalid roles or actions
+* **Enforces role-based permissions**
 
-Applies age-based action limits
+  * Prevents unauthorized actions
+* **Blocks banned users immediately**
+* **Applies age-based limits**
 
-Returns a clear reason when blocked
+  * Restricts actions based on age
+* **Returns a clear reason when blocked**
 
-Why I made this
+  * No vague errors or guessing
 
-AI should not decide safety or permissions by itself.
-This checker blocks unsafe or invalid requests before they reach AI or other logic.
+---
+
+## 🧠 **Why I Made This**
+
+AI should **not** decide safety or permissions by itself.
+
+This checker blocks **unsafe or invalid requests** *before* they reach AI or downstream logic.
 
 It makes systems:
 
-safer
+* **Safer**
+* **Predictable**
+* **Explainable**
 
-predictable
+---
 
-explainable
+## ⚙️ **How It Works**
 
-How it works
+* Rules are checked **in a fixed order**
+* If **any rule fails** → the request is **BLOCKED**
+* The **first failed rule** determines the reason
+* If **no rules fail** → the request is **ALLOWED**
 
-The program checks rules in order.
+**No loops.**
+**No guessing.**
+**Only explicit logic.**
 
-If a rule fails → the request is BLOCKED
+---
 
-The first failure decides the reason
+## 📌 **Examples**
 
-If no rules fail → the request is ALLOWED
+### ✔️ Allowed Request
 
-No loops.
-No guessing.
-Only explicit logic.
+**Input**
 
-Example
-
-Input
-
+```json
 {
     "user": "Meshack",
     "role": "viewer",
@@ -56,22 +70,30 @@ Input
     "age": 15,
     "flags": ["new_user"]
 }
+```
 
+**Output**
 
-Output
-
+```
 ALLOWED ✅
+```
 
+---
 
-Input
+### ❌ Blocked Request
 
+**Input**
+
+```json
 {
     "user": "Alex",
     "role": "viewer",
     "actions": ["post"]
 }
+```
 
+**Output**
 
-Output
-
+```
 BLOCKED ❌ — VIEWER_NO_POST_DELETE
+```
