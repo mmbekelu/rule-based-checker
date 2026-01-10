@@ -24,7 +24,7 @@ request = {
 }
 
 # -------------------------
-# 3. Normalize (NO loops)
+# 3. Normalize
 # -------------------------
 
 user = request.get("user")
