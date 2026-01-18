@@ -1,68 +1,70 @@
-# 🧱 **Rule-Based Checker (v0.1)**
+Rule-Based Checker (v0.1)
 
-This program checks a **structured request** and decides whether it is **ALLOWED** or **BLOCKED** using clear, deterministic rules.
+This program checks a structured request and decides whether it is ALLOWED or BLOCKED using clear, deterministic rules.
 
----
+What It Does
 
-## ✅ **What It Does**
+Normalizes input
 
-* **Normalizes input**
+Lowercases user and role
 
-  * Lowercases `user` and `role`
-* **Checks required fields**
+Checks required fields
 
-  * Ensures `user`, `role`, and `actions` exist
-* **Blocks invalid values**
+Ensures user, role, and actions exist
 
-  * Empty fields
-  * Invalid roles or actions
-* **Enforces role-based permissions**
+Blocks invalid values
 
-  * Prevents unauthorized actions
-* **Blocks banned users immediately**
-* **Applies age-based limits**
+Empty fields
 
-  * Restricts actions based on age
-* **Returns a clear reason when blocked**
+Invalid roles or actions
 
-  * No vague errors or guessing
+Enforces role-based permissions
 
----
+Prevents unauthorized actions
 
-## 🧠 **Why I Made This**
+Blocks banned users immediately
 
-AI should **not** decide safety or permissions by itself.
+Applies age-based limits
 
-This checker blocks **unsafe or invalid requests** *before* they reach AI or downstream logic.
+Restricts actions based on age
+
+Returns a clear reason when blocked
+
+No vague errors or guessing
+
+Why I Made This
+
+AI should not decide safety or permissions by itself.
+
+This checker blocks unsafe or invalid requests before they reach AI or downstream logic.
 
 It makes systems:
 
-* **Safer**
-* **Predictable**
-* **Explainable**
+Safer
 
----
+Predictable
 
-## ⚙️ **How It Works**
+Explainable
 
-* Rules are checked **in a fixed order**
-* If **any rule fails** → the request is **BLOCKED**
-* The **first failed rule** determines the reason
-* If **no rules fail** → the request is **ALLOWED**
+How It Works
 
-**No loops.**
-**No guessing.**
-**Only explicit logic.**
+Rules are checked in a fixed order
 
----
+If any rule fails, the request is BLOCKED
 
-## 📌 **Examples**
+The first failed rule determines the reason
 
-### ✔️ Allowed Request
+If no rules fail, the request is ALLOWED
 
-**Input**
+No loops.
+No guessing.
+Only explicit logic.
 
-```json
+Examples
+Allowed Request
+
+Input
+
 {
     "user": "Meshack",
     "role": "viewer",
@@ -70,30 +72,23 @@ It makes systems:
     "age": 15,
     "flags": ["new_user"]
 }
-```
 
-**Output**
 
-```
-ALLOWED ✅
-```
+Output
 
----
+ALLOWED
 
-### ❌ Blocked Request
+Blocked Request
 
-**Input**
+Input
 
-```json
 {
     "user": "Alex",
     "role": "viewer",
     "actions": ["post"]
 }
-```
 
-**Output**
 
-```
-BLOCKED ❌ — VIEWER_NO_POST_DELETE
-```
+Output
+
+BLOCKED — VIEWER_NO_POST_DELETE
