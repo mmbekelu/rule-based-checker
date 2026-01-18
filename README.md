@@ -59,7 +59,7 @@ Only explicit logic.
 Input:
 ```json
 {
-    "user": "Meshack",
+    "user": "Mbekelu",
     "role": "viewer",
     "actions": ["read", "comment"],
     "age": 15,
