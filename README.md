@@ -88,28 +88,3 @@ Pure deterministic behavior.
   "age": 15,
   "flags": ["new_user"]
 }
-
-## Expected output
-
-ALLOWED ✅
-
-
-## Blocked Request (viewer tries to post)
-
-{
-  "user": "Alex",
-  "role": "viewer",
-  "actions": ["post"],
-  "age": 17,
-  "flags": []
-}
-
-## Expected output
-BLOCKED ❌ — VIEWER_NO_POST_DELETE
-
-## ▶️ How To Run
-# Run the main example
-python main.py
-
-# Run tests
-python test_cases.py
