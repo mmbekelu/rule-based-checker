@@ -88,3 +88,9 @@ Pure deterministic behavior.
   "age": 15,
   "flags": ["new_user"]
 }
+```
+Expected output:
+BLOCKED ❌ — VIEWER_NO_POST_DELETE
+
+
+
