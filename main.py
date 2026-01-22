@@ -8,7 +8,7 @@ request = {
     "role": "Viewer",
     "actions": ["read", "comment"],
     "age": 15,
-    "flags": ["new_user"]
+    "flags": ["banned"]
 }
 
 allowed, reason = check_request(request)

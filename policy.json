@@ -1,0 +1,40 @@
+{
+  "version": "1.1",
+  "allowed_roles": ["guest", "viewer", "editor", "admin"],
+  "banned_flags": ["banned"],
+
+  "role_rules": {
+    "guest": {
+      "allowed_actions_exact": ["read"],
+      "reason": "GUEST_ONLY_READ"
+    },
+    "viewer": {
+      "blocked_actions_any": ["post", "delete"],
+      "reason": "VIEWER_NO_POST_DELETE"
+    },
+    "editor": {
+      "blocked_actions_any": ["delete"],
+      "reason": "EDITOR_NO_DELETE"
+    }
+  },
+
+  "age_rules": {
+    "under_13": {
+      "allowed_actions_exact": ["read"],
+      "reason": "UNDER_13_ONLY_READ"
+    },
+    "under_16": {
+      "blocked_actions_any": ["post", "delete"],
+      "reason": "UNDER_16_NO_POST_DELETE"
+    }
+  },
+
+  "reasons": {
+    "missing_required": "MISSING_REQUIRED_FIELD",
+    "empty_user": "EMPTY_USER",
+    "role_not_allowed": "ROLE_NOT_ALLOWED",
+    "actions_not_list": "ACTIONS_NOT_A_LIST",
+    "actions_empty": "ACTIONS_EMPTY",
+    "user_banned": "USER_BANNED"
+  }
+}
