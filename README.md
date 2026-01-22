@@ -4,7 +4,7 @@ A deterministic validation + permission layer that checks a structured request a
 
 ALLOWED
 
-BLOCKED + a reason code
+BLOCKED — <REASON_CODE>
 
 This runs before AI or downstream logic so the system stays predictable and safe.
 
