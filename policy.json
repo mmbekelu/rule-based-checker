@@ -1,6 +1,7 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "allowed_roles": ["guest", "viewer", "editor", "admin"],
+  "allowed_actions": ["read", "comment", "post", "delete"],
   "banned_flags": ["banned"],
 
   "role_rules": {
@@ -36,6 +37,8 @@
     "actions_not_list": "ACTIONS_NOT_A_LIST",
     "actions_empty": "ACTIONS_EMPTY",
     "user_banned": "USER_BANNED",
-    "flags_not_list": "FLAGS_NOT_LIST"
+
+    "flags_not_list": "FLAGS_NOT_A_LIST",
+    "action_not_allowed": "ACTION_NOT_ALLOWED"
   }
 }
