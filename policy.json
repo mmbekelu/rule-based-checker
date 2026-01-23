@@ -35,6 +35,7 @@
     "role_not_allowed": "ROLE_NOT_ALLOWED",
     "actions_not_list": "ACTIONS_NOT_A_LIST",
     "actions_empty": "ACTIONS_EMPTY",
-    "user_banned": "USER_BANNED"
+    "user_banned": "USER_BANNED",
+    "flags_not_list": "FLAGS_NOT_LIST"
   }
 }
