@@ -1,14 +1,22 @@
 # rules.py
-# Rule-Based Checker (v1.0)
-# Deterministic validation of structured data
+# Rule-Based Checker (v1.2) — Config-driven policy
 
-ALLOWED_ROLES = {"guest", "viewer", "editor", "admin"}
-BANNED_FLAGS = {"banned"}
+import json
+
+# Load policy from policy.json
+f = open("policy.json", "r")
+policy = json.load(f)
+f.close()
+
+ALLOWED_ROLES = set(policy["allowed_roles"])
+BANNED_FLAGS = set(policy["banned_flags"])
+
+ROLE_RULES = policy["role_rules"]
+AGE_RULES = policy["age_rules"]
+REASONS = policy["reasons"]
+
 
 def check_request(request):
-    allowed = True
-    reason = None
-
     user = request.get("user")
     role = request.get("role")
     actions = request.get("actions")
@@ -24,50 +32,55 @@ def check_request(request):
 
     # required fields
     if user is None or role is None or actions is None:
-        allowed = False
-        reason = "MISSING_REQUIRED_FIELD"
+        return False, REASONS["missing_required"]
 
-    elif user == "":
-        allowed = False
-        reason = "EMPTY_USER"
+    if user == "":
+        return False, REASONS["empty_user"]
 
-    elif role not in ALLOWED_ROLES:
-        allowed = False
-        reason = "ROLE_NOT_ALLOWED"
+    if role not in ALLOWED_ROLES:
+        return False, REASONS["role_not_allowed"]
 
-    elif not isinstance(actions, list):
-        allowed = False
-        reason = "ACTIONS_NOT_A_LIST"
+    if not isinstance(actions, list):
+        return False, REASONS["actions_not_list"]
 
-    elif actions == []:
-        allowed = False
-        reason = "ACTIONS_EMPTY"
+    if actions == []:
+        return False, REASONS["actions_empty"]
 
-    # banned flag (HIGH PRIORITY)
-    elif isinstance(flags, list) and ("banned" in flags):
-        allowed = False
-        reason = "USER_BANNED"
+    # banned flag (HIGH PRIORITY) — upgraded: normalize flags safely
+    if isinstance(flags, list):
+        # Convert each flag to string, strip spaces, lower-case it
+        flags = [str(f).strip().lower() for f in flags]
+
+        for flag in flags:
+            if flag in BANNED_FLAGS:
+                return False, REASONS["user_banned"]
 
     # role-based rules
-    elif role == "guest" and actions != ["read"]:
-        allowed = False
-        reason = "GUEST_ONLY_READ"
+    if role in ROLE_RULES:
+        rule = ROLE_RULES[role]
 
-    elif role == "viewer" and (("post" in actions) or ("delete" in actions)):
-        allowed = False
-        reason = "VIEWER_NO_POST_DELETE"
+        if "allowed_actions_exact" in rule:
+            if actions != rule["allowed_actions_exact"]:
+                return False, rule["reason"]
 
-    elif role == "editor" and ("delete" in actions):
-        allowed = False
-        reason = "EDITOR_NO_DELETE"
+        if "blocked_actions_any" in rule:
+            blocked = rule["blocked_actions_any"]
+            for a in actions:
+                if a in blocked:
+                    return False, rule["reason"]
 
     # age-based rules
-    elif isinstance(age, int) and age < 13 and actions != ["read"]:
-        allowed = False
-        reason = "UNDER_13_ONLY_READ"
+    if isinstance(age, int):
+        if age < 13:
+            rule = AGE_RULES["under_13"]
+            if actions != rule["allowed_actions_exact"]:
+                return False, rule["reason"]
 
-    elif isinstance(age, int) and age < 16 and (("post" in actions) or ("delete" in actions)):
-        allowed = False
-        reason = "UNDER_16_NO_POST_DELETE"
+        if age < 16:
+            rule = AGE_RULES["under_16"]
+            blocked = rule["blocked_actions_any"]
+            for a in actions:
+                if a in blocked:
+                    return False, rule["reason"]
 
-    return allowed, reason
+    return True, None
