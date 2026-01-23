@@ -24,7 +24,7 @@ def run_demo() -> None:
         "role": "Viewer",
         "actions": ["read", "comment"],
         "age": 15,
-        "flags": ["new_user"],
+        "flags": ["banned"],
     }
 
     ok, error = is_minimally_valid_request(request)
